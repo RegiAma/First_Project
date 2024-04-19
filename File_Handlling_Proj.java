@@ -18,24 +18,15 @@ public class File_Handlling_Proj {
 				String fname;
 				
 
-				System.out.println("================************=================");
-				System.out.println("-------------Welcome to my Application-------");
-				System.out.println("-------------Regina Machava----------------");
-				System.out.println("-------------Java Full Stack Developer------");
-				System.out.println("===============************==============");
-				
+				System.out.println("----------------************---------------- \n========== Welcome to my Application ==========");
+		        System.out.println("============== Regina Machava ============== \n========== Java Full Stack Developer ===========");
+		        System.out.println("----------------************----------------\n");
+
 				
 				do
 				{
-					
-					System.out.println("operations");
-					System.out.println("1. File creation");
-					System.out.println("2. Write in the file ");
-					System.out.println("3. Reading a file ");
-					System.out.println("4. Delete the file ");
-					System.out.println("5. Search the file");
-					System.out.println("6. List of Files ");
-					System.out.println("7. Exit");
+					System.out.println("\n------OPERATIONS------ \n1. File creation \n2. Write in the file \n3. Reading a file \n4. Delete the file ");
+			        System.out.println("5. Search the file \n6. List of Files \n7. Exit\n");
 					
 					System.out.println("enter your choice !!");
 					options=scanner.nextInt();
@@ -44,18 +35,18 @@ public class File_Handlling_Proj {
 					{
 					case 1:
 						
-						System.out.println("Enter the file name you want to create : ");
+						System.out.println("Enter the file name: ");
 						
 						fname=scanner.next();
 						
-						File f = new File(fname+ ".txt");		
-						if(f.createNewFile())
+						File fNum = new File(fname+ ".txt");		
+						if(fNum.createNewFile())
 						{
 							System.out.println("file created successfully !!");
 						}
 						else
 						{
-							if(f.exists())
+							if(fNum.exists())
 							{
 								System.out.println("File already exist ! ");
 							}
@@ -65,6 +56,7 @@ public class File_Handlling_Proj {
 							}
 						}
 						break;
+						
 					case  2:
 						
 						System.out.println("Enter the file name where you want to write : ");
@@ -72,7 +64,7 @@ public class File_Handlling_Proj {
 						
 						Scanner scanner1= new Scanner(System.in);
 						
-						System.out.println("Enter the content you want to write in the : ");
+						System.out.println("Enter the content you want to write to the file : ");
 						
 						String content=scanner1.nextLine();
 						
@@ -105,15 +97,15 @@ public class File_Handlling_Proj {
 						break;
 					case 4:
 						
-						System.out.println("Enter file name which you wanna delete : ");
+						System.out.println("Enter file name which you want to delete : ");
 						fname=scanner.next();
 						
-						File f3 = new File(fname+ ".txt");
+						File fNumDel = new File(fname+ ".txt");
 						
 						
-						if(f3.exists())
+						if(fNumDel.exists())
 						{
-							f3.delete();
+							fNumDel.delete();
 							System.out.println("File deleted uccessfully ! ");
 							
 						}
@@ -125,76 +117,95 @@ public class File_Handlling_Proj {
 						break;
 					case 5:
 						
-						System.out.print("Enter the file name you are searching for :");
-						fname=scanner.next();
-						
-						File f5 = new File("/Users/nkosazane/eclipse-workspace/Phase1");
-						
-						String[] list = f5.list();
-						int fl=0;
-						if(list==null)
-						{
-							System.out.println("File is not present in the directory ! ");
-						}
-						else
-						{
-							for(int i=0;i<list.length;i++)
-							{
-								String searchFile= list[i];
-								if(searchFile.equalsIgnoreCase(fname))
-								{
-									System.out.println("File is present in the directory ! );");
-								
-									fl=1;
-								}
-							}
-							
-							if(fl==0)
-							{
-								System.out.println("File not found ! ");
-							}
-						}
-						
+						try
+	                    {
+	                        File dir = new File("/Users/nkosazane/eclipse-workspace/Phase1");
+	                        System.out.print("Enter The File Name To Be Searched: ");
+	                        
+	                        String fileName = scanner.next();
+	                        boolean isFound = searchFile(dir, fileName);
+
+	                        if(isFound)
+	                        {
+	                            System.out.println("The File Was Found Successfully!!");
+	                        }
+	                        else
+	                        {
+	                            System.out.println("The File Was Not Found");
+	                        }
+	                    }
+	                    catch (Exception ex)
+	                    {
+	                        System.out.println("Error Searching The File");
+	                    }
 						
 						
 						break;
 						
 					case 6:
 						
-						System.out.println("List of Files and Folders are : ");
-						
-						File f6 = new File("/Users/nkosazane/eclipse-workspace/Phase1/");
-						
-						File[] list1 = f6.listFiles();
-						
-						for(File name: list1)
-						{
-							if(name.isDirectory())
-							{
-								System.out.println(name.getName());
-							}
-							else if(name.isFile())
-							{
-								System.out.println(name.getName());
-							}
-						}
-						break;
+						File fileDirect = new File("/Users/nkosazane/eclipse-workspace/Phase1");
+	                    listFileAndDirectory(fileDirect);
+	                    break;
+	                    
 					case 7:
 						System.out.println("Thankyou for using the Application !! ");
 						scanner.close();
 						System.exit(options);
+						
 						break;
 						
 					default:
-						System.out.println("enter the choice : ");
+						System.out.println("OOPS! I think You have made a mistake. Please enter your choice again.");
 					}
 				}
 				while(true);
 				
-				
-				
 
 			}
+			
+			public static boolean searchFile(File fileDirect, String fName) throws IOException
+		    {
+		        boolean isFound = false;
+		        File data[] = fileDirect.listFiles();
+
+		        
+		        for(File item: data)
+		        {
+		            if(item.isFile())
+		            {
+		                if(fName.equalsIgnoreCase(item.getName()))
+		                {
+		                    isFound = true;
+		                    break;
+		                }
+		            }
+		            else if(item.isDirectory())
+		            {
+		                searchFile(item.getAbsoluteFile(), fName);
+		            }
+		        }
+		        return isFound;
+		    }
+			
+			
+			public static void listFileAndDirectory(File fileDirect)
+		    {
+		        System.out.println("\n----List of Files and Folders Names---");
+
+		        File data[] = fileDirect.listFiles();
+		        for(File item: data)
+		        {
+		            if(item.isFile())
+		            {
+		                System.out.println("File: " + item.getName());
+		            }
+		            else if(item.isDirectory())
+		            {
+		                System.out.println("Folder: " + item.getName());
+		            }
+		        }
+		    }
 
 		}
 
